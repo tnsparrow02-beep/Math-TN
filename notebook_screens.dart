@@ -6,11 +6,47 @@ import 'app_lock.dart';
 import 'database_helper.dart';
 import 'digits.dart';
 import 'nb_files.dart';
-import 'sections.dart';
 import 'strings.dart';
 import 'widgets.dart';
 
-// ───────────────────────── Helpers for Section Lookup ─────────────────────────
+// ───────────────────────── Sections Definition ─────────────────────────
+
+class SectionInfo {
+  final String key;
+  final String titleKey;
+  final IconData icon;
+  final Color color;
+
+  const SectionInfo({
+    required this.key,
+    required this.titleKey,
+    required this.icon,
+    required this.color,
+  });
+
+  String title(BuildContext context) => context.t(titleKey);
+}
+
+const List<SectionInfo> kSections = [
+  SectionInfo(
+    key: 'control',
+    titleKey: 'ctrlTitle',
+    icon: Icons.assignment_turned_in_rounded,
+    color: AppColors.indigo,
+  ),
+  SectionInfo(
+    key: 'synthesis',
+    titleKey: 'synthTitle',
+    icon: Icons.description_rounded,
+    color: AppColors.teal,
+  ),
+  SectionInfo(
+    key: 'lessons',
+    titleKey: 'lessonsTitle',
+    icon: Icons.menu_book_rounded,
+    color: AppColors.amber,
+  ),
+];
 
 SectionInfo _getSectionInfo(String key) {
   for (final s in kSections) {
@@ -19,15 +55,12 @@ SectionInfo _getSectionInfo(String key) {
   return kSections.first;
 }
 
-bool _isControlSection(String key) =>
-    key == 'control' || key == 'ctrl' || (kSections.isNotEmpty && key == kSections.first.key);
-
-bool _isSynthesisSection(String key) =>
-    key == 'synthesis' || key == 'synth' || (kSections.length > 1 && key == kSections[1].key);
+bool _isControlSection(String key) => key == 'control' || key == 'ctrl';
+bool _isSynthesisSection(String key) => key == 'synthesis' || key == 'synth';
 
 // ───────────────────────── Top of the "مكتبتي" tab ─────────────────────────
 
-/// "دفتر الأستاذ": a search bar and big sections stacked vertically.
+/// "دفتر الأستاذ": a search bar and three big sections stacked vertically.
 class NotebookHome extends StatefulWidget {
   const NotebookHome({super.key});
 
@@ -76,7 +109,7 @@ class _NotebookHomeState extends State<NotebookHome> {
           ),
         ),
         SoftCard(
-          onTap: () => _go(const NotebookSearchScreen()),
+          onTap: () => _go(NotebookSearchScreen()),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
@@ -189,7 +222,6 @@ class _SectionCard extends StatelessWidget {
 // ───────────────────────── Folder content ─────────────────────────
 
 /// Content of a section (parentId == null) or of one of its folders.
-/// Create folders and subfolders, add any file, take photos, rename, delete, filter by name.
 class NotebookFolderScreen extends StatefulWidget {
   final String section;
   final int? parentId;
@@ -313,24 +345,3 @@ class _NotebookFolderScreenState extends State<NotebookFolderScreen> {
           name: name,
           path: stored.path,
           ext: stored.ext,
-          size: stored.size,
-        );
-      }
-    } catch (_) {
-      if (mounted) showSnack(context, context.t('fileAddFail'));
-    } finally {
-      AppLock.busy--;
-      if (mounted) setState(() => _busy = false);
-    }
-    await _load();
-  }
-
-  Future<void> _openItem(NbNode n) async {
-    if (n.isFolder) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) =>
-              NotebookFolderScreen(section: widget.section, parentId: n.id, title: n.name),
-        ),
-      );
