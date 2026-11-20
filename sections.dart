@@ -1,55 +1,114 @@
 import 'package:flutter/material.dart';
 
-import 'strings.dart';
+/// Each entry: [Arabic, French, English]
+const Map<String, List<String>> _strings = {
+  // Navigation / general
+  'appTitle': ['Math-Thauraya', 'Math-Thauraya', 'Math-Thauraya'],
+  'navQuiz': ['الاختبار', 'Quiz', 'Quiz'],
+  'navClasses': ['الأقسام', 'Classes', 'Classes'],
+  'navTimetable': ['الجدول', 'Emploi du temps', 'Timetable'],
+  'navCalendar': ['الأجندة', 'Agenda', 'Calendar'],
+  'save': ['حفظ', 'Enregistrer', 'Save'],
+  'cancel': ['إلغاء', 'Annuler', 'Cancel'],
+  'delete': ['حذف', 'Supprimer', 'Delete'],
+  'edit': ['تعديل', 'Modifier', 'Edit'],
+  'close': ['إغلاق', 'Fermer', 'Close'],
+  'ok': ['موافق', 'OK', 'OK'],
+  'required': ['هذا الحقل مطلوب', 'Champ obligatoire', 'Required field'],
+  'confirmDelete': ['هل تريد الحذف؟', 'Confirmer la suppression ?', 'Delete this item?'],
+  'saved': ['تم الحفظ', 'Enregistré', 'Saved'],
 
-/// One of the three sections of "دفتر الأستاذ" (inside the "مكتبتي" tab).
-class SectionInfo {
-  final String key;
-  final String titleKey;
-  final IconData icon;
-  final Color color;
+  // Settings, timer, backup
+  'settings': ['الإعدادات', 'Réglages', 'Settings'],
+  'timerTitle': ['مؤقّت السؤال', 'Chrono par question', 'Question timer'],
+  'timerOff': ['بدون', 'Aucun', 'Off'],
+  'seconds': ['ث', 's', 's'],
+  'timeUp': ['انتهى الوقت!', 'Temps écoulé !', 'Time is up!'],
+  'soundTitle': ['الصوت والنطق', 'Sons et voix', 'Sound and voice'],
+  'soundSub': ['صوت النجاح ونطق كلمة التشجيع', 'Son de réussite et voix', 'Success chime and spoken praise'],
+  'backupTitle': ['نسخة احتياطية', 'Sauvegarde', 'Backup'],
+  'backupCopy': ['نسخ بياناتي', 'Copier mes données', 'Copy my data'],
+  'backupCopySub': ['تُنسخ كل بياناتك كنص. الصقه في واتساب أو الملاحظات للاحتفاظ به.', 'Toutes vos données sont copiées sous forme de texte. Collez-les dans WhatsApp ou Notes.', 'All your data is copied as text. Paste it into WhatsApp or Notes to keep it.'],
+  'backupCopied': ['تم النسخ. الصقه الآن في مكان آمن.', 'Copié. Collez-le dans un endroit sûr.', 'Copied. Paste it somewhere safe now.'],
+  'restoreTitle': ['استرجاع البيانات', 'Restaurer les données', 'Restore data'],
+  'restoreSub': ['انسخ النسخة الاحتياطية ثم اضغط على الزر.', 'Copiez la sauvegarde puis touchez le bouton.', 'Copy your backup, then tap the button.'],
+  'restoreConfirm': ['سيتم استبدال كل البيانات الحالية بالنسخة المنسوخة. هل تريد المتابعة؟', 'Toutes les données actuelles seront remplacées par la sauvegarde. Continuer ?', 'All current data will be replaced by the backup. Continue?'],
+  'restoreOk': ['تم استرجاع البيانات', 'Données restaurées', 'Data restored'],
+  'restoreFail': ['لا توجد نسخة صالحة في الحافظة', 'Aucune sauvegarde valide dans le presse-papiers', 'No valid backup in the clipboard'],
+  'restore': ['استرجاع', 'Restaurer', 'Restore'],
+  'aboutText': ['يعمل بدون إنترنت', 'Fonctionne sans internet', 'Works without internet'],
 
-  const SectionInfo({
-    required this.key,
-    required this.titleKey,
-    required this.icon,
-    required this.color,
-  });
+  // Student notes
+  'studentNotes': ['ملاحظات', 'Observations', 'Notes'],
+  'studentNoteHint': ['اكتب ملاحظاتك الخاصة عن هذا التلميذ...', 'Écrivez vos observations privées sur cet élève...', 'Write your private observations about this student...'],
 
-  String title(BuildContext context) => context.t(titleKey);
-}
+  // PIN lock
+  'pinEnter': ['أدخل رمز الدخول', 'Entrez votre code', 'Enter your PIN'],
+  'pinCurrent': ['أدخل الرمز الحالي', 'Entrez le code actuel', 'Enter the current PIN'],
+  'pinNew': ['أنشئ رمزا جديدا', 'Créez un nouveau code', 'Create a new PIN'],
+  'pinConfirm': ['أعد إدخال الرمز للتأكيد', 'Confirmez le code', 'Re-enter the PIN to confirm'],
+  'pinHint': ['من 4 إلى 8 أرقام', 'De 4 à 8 chiffres', '4 to 8 digits'],
+  'pinWrong': ['الرمز غير صحيح', 'Code incorrect', 'Wrong PIN'],
+  'pinMismatch': ['الرمزان غير متطابقين، حاول من جديد', 'Les codes ne correspondent pas, réessayez', 'The PINs do not match, try again'],
+  'pinWait': ['محاولات كثيرة. انتظر', 'Trop d\'essais. Attendez', 'Too many tries. Wait'],
+  'pinForgot': ['نسيت الرمز؟', 'Code oublié ?', 'Forgot PIN?'],
+  'pinForgotBody': [
+    'لا يمكن استرجاع الرمز. الحل الوحيد هو مسح كل بيانات التطبيق (الأقسام والتلاميذ والأسئلة والملفات...). بعدها يفتح التطبيق من غير رمز، وتنجم تفعّل رمزا جديدا من الإعدادات. يمكنك استرجاع نسخة احتياطية إن كنت نسخت واحدة. هل تريد مسح كل شيء؟',
+    'Le code ne peut pas être récupéré. La seule solution est d\'effacer toutes les données (classes, élèves, questions, fichiers...). L\'application s\'ouvre ensuite sans code et vous pourrez en activer un nouveau dans les réglages. Vous pourrez restaurer une sauvegarde si vous en avez copié une. Tout effacer ?',
+    'The PIN cannot be recovered. The only way is to erase all app data (classes, students, questions, files...). The app then opens without a PIN and you can enable a new one in Settings. You can restore a backup if you copied one.\n\nErase everything?',
+  ],
+  'pinEnable': ['تفعيل الرمز السري', 'Activer le code secret', 'Enable PIN'],
+  'pinDisable': ['إلغاء الرمز السري', 'Désactiver le code secret', 'Disable PIN'],
+  'pinEnabledNow': ['تم تفعيل الرمز السري', 'Code secret activé', 'PIN enabled'],
+  'pinDisabledNow': ['تم إلغاء الرمز السري. يفتح التطبيق مباشرة', 'Code désactivé. L\'application s\'ouvre directement', 'PIN removed. The app opens directly'],
+  'pinStatusOn': ['الرمز السري مفعّل', 'Code secret activé', 'PIN is on'],
+  'pinStatusOff': ['الرمز السري غير مفعّل: يفتح التطبيق مباشرة', 'Code désactivé : l\'application s\'ouvre directement', 'PIN is off: the app opens directly'],
+  'addFolder': ['إضافة مجلد', 'Ajouter un dossier', 'Add folder'],
+  'myFoldersTitle': ['مجلداتي', 'Mes dossiers', 'My folders'],
+  'noFoldersYet': ['لا توجد مجلدات بعد. اضغط على «إضافة مجلد».', 'Aucun dossier. Touchez « Ajouter un dossier ».', 'No folders yet. Tap "Add folder".'],
+  'pinWipe': ['مسح كل شيء', 'Tout effacer', 'Erase everything'],
+  'pinChange': ['تغيير الرمز السري', 'Changer le code secret', 'Change PIN'],
+  'pinChanged': ['تم تغيير الرمز', 'Code modifié', 'PIN changed'],
+  'lockNow': ['قفل التطبيق الآن', 'Verrouiller maintenant', 'Lock the app now'],
+  'securityTitle': ['الأمان', 'Sécurité', 'Security'],
+  'securityNote': ['الرمز السري اختياري. إذا فعّلته يُطلب عند فتح التطبيق ويعود القفل بعد دقيقتين من الغياب. اكتبه في مكان آمن: لا يمكن استرجاعه.', 'Le code secret est facultatif. S\'il est activé, il est demandé à l\'ouverture et après 2 minutes d\'absence. Notez-le : il ne peut pas être récupéré.', 'The PIN is optional. When enabled it is asked when the app opens and after 2 minutes away. Keep it safe: it cannot be recovered.'],
 
-const SectionInfo kControl = SectionInfo(
-  key: 'control',
-  titleKey: 'ctrlTitle',
-  icon: Icons.assignment_turned_in_rounded,
-  color: Color(0xFF2563EB),
-);
+  // Notebook (three sections)
+  'nbHeading': ['دفتر الأستاذ', 'Cahier du professeur', 'Teacher\'s notebook'],
+  'lessonsTitle': ['الدروس', 'Cours', 'Lessons'],
+  'foldersCount': ['مجلد', 'dossiers', 'folders'],
+  'itemsCount': ['عنصر', 'éléments', 'items'],
+  'search': ['بحث', 'Rechercher', 'Search'],
+  'searchHere': ['ابحث في هذا المجلد...', 'Rechercher dans ce dossier...', 'Search in this folder...'],
+  'searchAll': ['ابحث عن مجلد أو ملف...', 'Chercher un dossier ou un fichier...', 'Search a folder or a file...'],
+  'searchAllHint': ['اكتب جزءا من اسم المجلد أو الملف. يشمل البحث فروض المراقبة والفروض التأليفية والدروس.', 'Tapez une partie du nom. La recherche couvre les devoirs de contrôle, de synthèse et les cours.', 'Type part of a name. Search covers assessments, synthesis exams and lessons.'],
+  'noResults': ['لا توجد نتائج', 'Aucun résultat', 'No results'],
+  'newFolder': ['مجلد جديد', 'Nouveau dossier', 'New folder'],
+  'folderName': ['اسم المجلد', 'Nom du dossier', 'Folder name'],
+  'folderHint': ['مثال: السنة السابعة أساسي', 'Ex : 7ème année', 'e.g. Grade 7'],
+  'btnFolder': ['مجلد', 'Dossier', 'Folder'],
+  'btnFile': ['ملف', 'Fichier', 'File'],
+  'btnPhoto': ['صورة', 'Photo', 'Photo'],
+  'openFolder': ['فتح المجلد', 'Ouvrir le dossier', 'Open folder'],
+  'openFile': ['فتح الملف', 'Ouvrir le fichier', 'Open file'],
+  'newName': ['الاسم الجديد', 'Nouveau nom', 'New name'],
+  'deleteFolderQ': ['حذف المجلد؟', 'Supprimer le dossier ?', 'Delete the folder?'],
+  'deleteFileQ': ['حذف الملف؟', 'Supprimer le fichier ?', 'Delete the file?'],
+  'deleteFolderBody': ['وكل ما بداخله سيُحذف نهائيا.', 'et tout son contenu seront supprimés définitivement.', 'and everything inside will be permanently deleted.'],
+  'deleteFileBody': ['سيُحذف نهائيا من هاتفك.', 'sera supprimé définitivement du téléphone.', 'will be permanently deleted from the phone.'],
+  'emptyFolder': ['هذا المجلد فارغ. أنشئ مجلدا، أو ارفع ملفا (PDF أو Word أو صورة...) أو التقط صورة.', 'Ce dossier est vide. Créez un dossier, importez un fichier (PDF, Word, image...) ou prenez une photo.', 'This folder is empty. Create a folder, upload a file (PDF, Word, image...) or take a photo.'],
+  'makeCtrlFolders': ['إنشاء مجلدات فرض مراقبة عدد 1 إلى 6', 'Créer les dossiers devoir de contrôle 1 à 6', 'Create continuous assessment folders 1 to 6'],
+  'makeSynthFolders': ['إنشاء مجلدات فرض تأليفي عدد 1 إلى 3', 'Créer les dossiers devoir de synthèse 1 à 3', 'Create synthesis exam folders 1 to 3'],
+  'byYearHeading': ['المكتبة حسب السنة الدراسية', 'Bibliothèque par année scolaire', 'Library by academic year'],
 
-const SectionInfo kSynthesis = SectionInfo(
-  key: 'synthesis',
-  titleKey: 'synthTitle',
-  icon: Icons.workspace_premium_rounded,
-  color: Color(0xFF7C3AED),
-);
-
-const SectionInfo kLessons = SectionInfo(
-  key: 'lessons',
-  titleKey: 'lessonsTitle',
-  icon: Icons.menu_book_rounded,
-  color: Color(0xFF059669),
-);
-
-/// Your own folders (button "إضافة مجلد" in مكتبتي). Not one of the three main sections.
-const SectionInfo kMyFolders = SectionInfo(
-  key: 'library',
-  titleKey: 'myFoldersTitle',
-  icon: Icons.folder_copy_rounded,
-  color: Color(0xFF3730A3),
-);
-
-/// Order on screen: top = control tests, middle = synthesis exams, bottom = lessons.
-const List<SectionInfo> kSections = [kControl, kSynthesis, kLessons];
-
-SectionInfo sectionByKey(String key) => [...kSections, kMyFolders]
-    .firstWhere((s) => s.key == key, orElse: () => kLessons);
+  // Quiz library + AI tool
+  'quizLibrary': ['مكتبة الأسئلة', 'Bibliothèque de questions', 'Question library'],
+  'quizLibrarySub': ['أسئلة جاهزة مع إجاباتها. أضفها لبنكك وعدّل عليها كما تشاء.', 'Questions prêtes avec leurs réponses. Ajoutez-les à votre banque et modifiez-les.', 'Ready questions with answers. Add them to your bank and edit them freely.'],
+  'addedLabel': ['مضاف', 'ajoutées', 'added'],
+  'addAll': ['إضافة الكل', 'Tout ajouter', 'Add all'],
+  'addToBank': ['إضافة إلى بنك الأسئلة', 'Ajouter à ma banque', 'Add to my question bank'],
+  'addedCount': ['تمت إضافة', 'Ajoutées', 'Added'],
+  'skippedDup': ['مكرر تم تجاهله', 'Doublons ignorés', 'Duplicates skipped'],
+  'aiTool': ['الأداة الذكية', 'Outil intelligent', 'AI tool'],
+  'aiHelpTitle': ['كيف أكتب النص؟', 'Comment écrire le texte ?', 'How to write the text?'],
+  'aiHelpBody': [
