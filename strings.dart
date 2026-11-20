@@ -52,13 +52,10 @@ const Map<String, List<String>> _strings = {
   'pinMismatch': ['الرمزان غير متطابقين، حاول من جديد', 'Les codes ne correspondent pas, réessayez', 'The PINs do not match, try again'],
   'pinWait': ['محاولات كثيرة. انتظر', 'Trop d\'essais. Attendez', 'Too many tries. Wait'],
   'pinForgot': ['نسيت الرمز؟', 'Code oublié ?', 'Forgot PIN?'],
-  'pinForgotBody': [
-    'لا يمكن استرجاع الرمز. الحل الوحيد هو مسح كل بيانات التطبيق (الأقسام والتلاميذ والأسئلة والملفات...). بعدها يفتح التطبيق من غير رمز، وتنجم تفعّل رمزا جديدا من الإعدادات. يمكنك استرجاع نسخة احتياطية إن كنت نسخت واحدة.
+      'pinForgotBody': [
+      'لا يمكن استرجاع الرمز. الحل الوحيد هو مسح كل بيانات التطبيق (الأقسام والتلاميذ والأسئلة والملفات...). بعدها يفتح التطبيق من غير رمز، وتنجم تفعّل رمزا جديدا من الإعدادات. يمكنك استرجاع نسخة احتياطية إن كنت نسخت واحدة. هل تريد مسح كل شيء؟',
+      'Le code ne peut pas être récupéré. La seule solution est d\'effacer toutes les données (classes, élèves, questions, fichiers...). L\'application s\'ouvre ensuite sans code et vous pourrez en activer un nouveau dans les réglages. Vous pourrez restaurer une sauvegarde si vous en avez copié une. Tout effacer ?',
 
-هل تريد مسح كل شيء؟',
-    'Le code ne peut pas être récupéré. La seule solution est d\'effacer toutes les données (classes, élèves, questions, fichiers...). L\'application s\'ouvre ensuite sans code et vous pourrez en activer un nouveau dans les réglages. Vous pourrez restaurer une sauvegarde si vous en avez copié une.
-
-Tout effacer ?',
     'The PIN cannot be recovered. The only way is to erase all app data (classes, students, questions, files...). The app then opens without a PIN and you can enable a new one in Settings. You can restore a backup if you copied one.
 
 Erase everything?',
